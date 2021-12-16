@@ -1,0 +1,10 @@
+{
+    "cmake.configureOnOpen": false,
+    "files.associations": {
+        "zephyr.h": "c",
+        "kernel.h": "c",
+        "errno.h": "c"
+    },
+    "editor.minimap.enabled": false,
+    "workbench.editor.enablePreview": false
+}
