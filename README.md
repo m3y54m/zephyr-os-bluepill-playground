@@ -1,5 +1,12 @@
 # Getting started with Zephyr RTOS on BluePill board
 
+## Project Initialization
+
+Create a new project using PlatformIO with the following settings:
+
+- Board: BluePill F103C8 (Generic)
+- Framework: Zephyr RTOS
+
 ## Upload
 
 ### Using ST-LINK
@@ -12,21 +19,44 @@ In linux, you can use the following commands to install the ST-Link drivers:
 sudo apt -y install stlink-tools
 sudo systemctl restart udev
 ```
+
+Modify `platformio.ini` file to set `stlink` as default upload method:
+
+```
+upload_protocol = stlink
+```
+
 Now you can `Upload` the firmware to the board using [PlaformIO](https://platformio.org/).
 
-### Using USB Bootloader (DFU)
+You can also use `st-flash` tool for programming using ST-Link in linux:
 
-[DFU](https://github.com/devanlai/dapboot) is a simple USB bootloader that can be used to upload the firmware to the board without the need to any additional hardware (e.g. a programmer or debugger).
+```console
+st-flash write firmware.bin 0x8000000
+```
 
-### Boot Configuration
+### Using UART and Embedded Bootloader
 
-| Boot 1 | Boot 0 | Boot Mode         | Aliasing                                    |
+All the STM32 microcontrollers come with built-in bootloaders that burned in during production.
+
+![](assets/memory-mapping.png)
+
+A couple of special MCU pins has to be set-up to proper logical values to enter the bootloader. The pins are named BOOT0 and BOOT1 on the STM32 microcontroller. Boot pins can select several modes of bootloader operation:
+
+| BOOT1  | BOOT0  | Boot Mode         | Aliasing                                    |
 | ------ | ------ | ----------------- | ------------------------------------------- |
 | X      | 0      | Main Flash Memory | Main flash memory is selected as boot space |
 | 0      | 1      | System Memory     | System memory is selected as boot space     |
 | 1      | 1      | Embedded SRAM     | Embedded SRAM is selected as boot space     |
 
 ![](assets/boot-mode.jpg)
+
+As you can see, there are three cases:
+
+- The first case is when the BOOT0 pin is tied to the ground, and BOOT1 is open or at a logical state of 0 after the reset program is executed from Main Flash Memory. Grounded BOOT pins are a standard configuration when executing programs in the field.
+- The second case (BOOT1=0; BOOT0=1) means that after reset execution starts at System memory were built into bootloader resides. This is the case when we need to upload binaries via USART1.
+- The third case means that program execution is performed in SRAM.
+
+Read this article to understand how you can use UART1 for programming this board: [](https://scienceprog.com/flashing-programs-to-stm32-embedded-bootloader/)
 
 ## Supported Features in Zephyr
 
@@ -74,8 +104,7 @@ output is assigned to UART_1. Default settings are **115200 8N1**.
 
 #### On-Board LEDs
 
-The board has one on-board LED that is connected to PB12/PC13 on the
-black/blue variants respectively.
+The board has one on-board LED that is connected to PC13.
 
 ## Pinout
 
@@ -121,11 +150,15 @@ Note: You should log out and log in or reboot your computer to apply the changes
 
 - [Blue Pill - STM32F103C8T6](https://stm32-base.org/boards/STM32F103C8T6-Blue-Pill.html)
 - [Getting Started with STM32F103C8T6 Blue Pill](https://www.electronicshub.org/getting-started-with-stm32f103c8t6-blue-pill/)
-- [PlatformIO BluePill F103CB](https://docs.platformio.org/en/latest/boards/ststm32/bluepill_f103cb.html)
-- [DFU Bootloader for STM32 chips](https://github.com/devanlai/dapboot)
+- [PlatformIO BluePill F103CB](https://docs.platformio.org/en/latest/boards/ststm32/bluepill_f103c8.html)
 - [Connecting ST-LINK debugger](https://stm32-base.org/guides/connecting-your-debugger.html)
 - [How to fix PlatformIO STM32 Error: libusb_open() failed with LIBUSB_ERROR_ACCESS](https://techoverflow.net/2021/09/22/how-to-fix-platformio-stm32-error-libusb_open-failed-with-libusb_error_access/)
 - [Zephyr for BluePill Documentation](https://docs.zephyrproject.org/latest/boards/arm/stm32_min_dev/doc/index.html)
 - [Zephyr Blinky Sample Application](https://github.com/zephyrproject-rtos/zephyr/blob/main/samples/basic/blinky/src/main.c)
 - [Zephyr Tutorial for Beginners](https://github.com/maksimdrachov/zephyr-rtos-tutorial)
 - [IoT RTOS Zephyr on cheap STM32 Minimum Development Board](https://embedjournal.com/iot-rtos-zephyr-stm32-minimum-system-development-board/)
+- [Bootloader for STM32F103 boards, to use with the Arduino_STM32 repo and the Arduino IDE](https://github.com/rogerclarkmelbourne/STM32duino-bootloader/blob/master/bootloader_only_binaries/generic_boot20_pc13.bin)
+- [DFU Bootloader for STM32 chips](https://github.com/devanlai/dapboot)
+- [AN2606 Application note: STM32 microcontroller system memory boot mode](https://www.st.com/content/ccc/resource/technical/document/application_note/b9/9b/16/3a/12/1e/40/0c/CD00167594.pdf/files/CD00167594.pdf/jcr:content/translations/en.CD00167594.pdf)
+- [Accessing Devices without Sudo](https://elinux.org/Accessing_Devices_without_Sudo)
+- [Programming STM32F103 Blue Pill using USB Bootloader and PlatformIO](https://coytbarringer.com/programming-stm32f103-blue-pill-using-usb-bootloader-platformio/)

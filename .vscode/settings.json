@@ -3,7 +3,8 @@
     "files.associations": {
         "zephyr.h": "c",
         "kernel.h": "c",
-        "errno.h": "c"
+        "errno.h": "c",
+        "printk.h": "c"
     },
     "editor.minimap.enabled": false,
     "workbench.editor.enablePreview": false
