@@ -56,7 +56,7 @@ As you can see, there are three cases:
 - The second case (BOOT1=0; BOOT0=1) means that after reset execution starts at System memory were built into bootloader resides. This is the case when we need to upload binaries via USART1.
 - The third case means that program execution is performed in SRAM.
 
-Read this article to understand how you can use UART1 for programming this board: [](https://scienceprog.com/flashing-programs-to-stm32-embedded-bootloader/)
+Read [this article](https://scienceprog.com/flashing-programs-to-stm32-embedded-bootloader/) to understand how you can use UART1 for programming this board: 
 
 ## Supported Features in Zephyr
 
