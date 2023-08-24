@@ -38,7 +38,8 @@ st-flash write firmware.bin 0x8000000
 
 All the STM32 microcontrollers come with built-in bootloaders that burned in during production.
 
-![](assets/memory-mapping.png)
+![memory-mapping](https://github.com/m3y54m/zephyr-os-bluepill-playground/assets/1549028/9bf5569e-b50e-4b1a-a864-6f612b9ceae4)
+
 
 A couple of special MCU pins has to be set-up to proper logical values to enter the bootloader. The pins are named BOOT0 and BOOT1 on the STM32 microcontroller. Boot pins can select several modes of bootloader operation:
 
@@ -48,7 +49,7 @@ A couple of special MCU pins has to be set-up to proper logical values to enter 
 | 0      | 1      | System Memory     | System memory is selected as boot space     |
 | 1      | 1      | Embedded SRAM     | Embedded SRAM is selected as boot space     |
 
-![](assets/boot-mode.jpg)
+![boot-mode](https://github.com/m3y54m/zephyr-os-bluepill-playground/assets/1549028/61dce9f7-215b-49e4-8745-91ad020d334f)
 
 As you can see, there are three cases:
 
@@ -108,16 +109,16 @@ The board has one on-board LED that is connected to PC13.
 
 ## Pinout
 
-![](assets/bluepill-pinout.gif)
+![bluepill-pinout](https://github.com/m3y54m/zephyr-os-bluepill-playground/assets/1549028/9ed22ff4-b452-4d14-81eb-e22531671370)
 
 ## Schematics
 
-![](assets/bluepill-schematic.jpg)
+![bluepill-schematic](https://github.com/m3y54m/zephyr-os-bluepill-playground/assets/1549028/5cc9dd1b-9f18-4a7a-9086-c50335ad85d4)
+
 
 ## USB to Serial Cable
 
-![](assets/pl2303hxd-cable.jpg)
-
+![pl2303hxd-cable](https://github.com/m3y54m/zephyr-os-bluepill-playground/assets/1549028/148db7e0-329e-42b2-8abb-eb73640658fc)
 
 USB to Serial (UART) cable is used to connect the board to a PC.
 
